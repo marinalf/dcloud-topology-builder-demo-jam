@@ -1,7 +1,7 @@
 resource "dcloud_topology" "demo_topology" {
   name        = "Demo Jam Topology"
   description = "Sample Topology created via Terraform"
-  notes = "Created using Terraform"
+  notes       = "Created using Terraform"
   datacenter  = "RTP"
 }
 
@@ -34,7 +34,7 @@ resource "dcloud_vm" "jump_host" {
     name        = "Network adapter 0"
     mac_address = "00:50:56:00:02:AA"
     type        = "VIRTUAL_VMXNET_3"
-    ip_address  = "198.18.1.100"
+    ip_address  = "198.18.133.100"
     rdp_enabled = true
   }
 
@@ -43,13 +43,14 @@ resource "dcloud_vm" "jump_host" {
   }
 }
 
-## 
+# https://github.com/cisco-open/terraform-provider-dcloud/issues/23
 
+/*
 resource "dcloud_vm" "nexus_dashboard" {
   inventory_vm_id   = "12324540"
   topology_uid      = dcloud_topology.demo_topology.id
   name              = "NDFC"
-  description       = "Nexus_dashboard_2.3_node_1"
+  description       = "Nexus_dashboard_2.3_node_1" # On GUI is "nexus-dashboard-master-v2-3-1c-unconfig"
   cpu_qty           = 32
   memory_mb         = 131072
   nested_hypervisor = false
@@ -72,7 +73,7 @@ resource "dcloud_vm" "nexus_dashboard" {
   }
 
   network_interfaces {
-    network_uid = "VLAN-PRIMARY"
+    network_uid = "VLAN-PRIMARY" # Need data source support for existing network
     name        = "Network adapter 1"
     mac_address = "00:50:56:97:d7:90"
     type        = "VIRTUAL_VMXNET_3"
@@ -89,7 +90,7 @@ resource "dcloud_vm" "cml" {
   inventory_vm_id   = "13071420"
   topology_uid      = dcloud_topology.demo_topology.id
   name              = "CML"
-  description       = "sp_cml2_2.6.0-5_amd64-6"
+  description       = "sp_cml2_2.6.0-5_amd64-6" # On GUI is "cml"
   cpu_qty           = 4
   memory_mb         = 8192
   nested_hypervisor = false
@@ -112,7 +113,7 @@ resource "dcloud_vm" "cml" {
   }
 
   network_interfaces {
-    network_uid = "VLAN-PRIMARY"
+    network_uid = "VLAN-PRIMARY" # Need data source support for existing network
     name        = "Network adapter 1"
     mac_address = "00:50:56:97:d7:90"
     type        = "VIRTUAL_VMXNET_3"
@@ -124,3 +125,4 @@ resource "dcloud_vm" "cml" {
     vm_console_enabled = false
   }
 }
+*/
