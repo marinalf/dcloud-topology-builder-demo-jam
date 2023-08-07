@@ -45,7 +45,6 @@ resource "dcloud_vm" "jump_host" {
 
 # https://github.com/cisco-open/terraform-provider-dcloud/issues/23
 
-/*
 resource "dcloud_vm" "nexus_dashboard" {
   inventory_vm_id   = "12324540"
   topology_uid      = dcloud_topology.demo_topology.id
@@ -54,7 +53,7 @@ resource "dcloud_vm" "nexus_dashboard" {
   cpu_qty           = 32
   memory_mb         = 131072
   nested_hypervisor = false
-  os_family         = "Linux"
+  os_family         = "LINUX"
 
   advanced_settings {
     all_disks_non_persistent = false
@@ -71,7 +70,7 @@ resource "dcloud_vm" "nexus_dashboard" {
     ip_address  = "198.18.1.10"
     rdp_enabled = false
   }
-
+/*
   network_interfaces {
     network_uid = "VLAN-PRIMARY" # Need data source support for existing network
     name        = "Network adapter 1"
@@ -80,7 +79,7 @@ resource "dcloud_vm" "nexus_dashboard" {
     ip_address  = "198.18.133.100"
     rdp_enabled = false
   }
-
+*/
   remote_access {
     vm_console_enabled = false
   }
@@ -94,11 +93,11 @@ resource "dcloud_vm" "cml" {
   cpu_qty           = 4
   memory_mb         = 8192
   nested_hypervisor = false
-  os_family         = "Linux"
+  os_family         = "LINUX"
 
   advanced_settings {
     all_disks_non_persistent = false
-    bios_uuid                = "42 17 67 67 f9 1f 71 b0-74 ec 4f 0c 79 36 fa 0f"
+    bios_uuid                = "42 17 67 67 f9 1f 71 b0-74 ec 4f 0c 79 36 fa 0f" #This needs to be an unique number for licensing purposes.
     name_in_hypervisor       = "sp_cml2_2.6.0-5_amd64-6"
     not_started              = false
   }
@@ -112,6 +111,7 @@ resource "dcloud_vm" "cml" {
     rdp_enabled = false
   }
 
+/*
   network_interfaces {
     network_uid = "VLAN-PRIMARY" # Need data source support for existing network
     name        = "Network adapter 1"
@@ -120,9 +120,8 @@ resource "dcloud_vm" "cml" {
     ip_address  = "198.18.133.101"
     rdp_enabled = false
   }
-
+*/
   remote_access {
     vm_console_enabled = false
   }
 }
-*/
