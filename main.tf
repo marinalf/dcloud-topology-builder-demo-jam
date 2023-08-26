@@ -1,3 +1,5 @@
+# Plan needs to run twice to save VM name: https://github.com/cisco-open/terraform-provider-dcloud/issues/23
+
 resource "dcloud_topology" "demo_topology" {
   name        = "Demo Jam Topology"
   description = "Sample Topology created via Terraform"
@@ -5,10 +7,10 @@ resource "dcloud_topology" "demo_topology" {
   datacenter  = "RTP"
 }
 
-resource "dcloud_network" "demo_network" {
-  name                 = "Nexus Dashboard & CML"
-  description          = "Demo Network"
-  inventory_network_id = "L3-VLAN-1"
+resource "dcloud_network" "default_network" {
+  name                 = "Management"
+  description          = "Nexus Dashboard & CML"
+  inventory_network_id = "VLAN-PRIMARY"
   topology_uid         = dcloud_topology.demo_topology.id
 }
 
@@ -30,11 +32,11 @@ resource "dcloud_vm" "jump_host" {
   }
 
   network_interfaces {
-    network_uid = dcloud_network.demo_network.id
+    network_uid = dcloud_network.default_network.id
     name        = "Network adapter 0"
     mac_address = "00:50:56:00:02:AA"
     type        = "VIRTUAL_VMXNET_3"
-    ip_address  = "198.18.133.100"
+    ip_address  = "198.18.133.20"
     rdp_enabled = true
   }
 
@@ -42,8 +44,6 @@ resource "dcloud_vm" "jump_host" {
     vm_console_enabled = false
   }
 }
-
-# https://github.com/cisco-open/terraform-provider-dcloud/issues/23
 
 resource "dcloud_vm" "nexus_dashboard" {
   inventory_vm_id   = "12324540"
@@ -63,23 +63,14 @@ resource "dcloud_vm" "nexus_dashboard" {
   }
 
   network_interfaces {
-    network_uid = dcloud_network.demo_network.id
+    network_uid = dcloud_network.default_network.id
     name        = "Network adapter 0"
-    mac_address = "00:50:56:97:d7:90"
-    type        = "VIRTUAL_VMXNET_3"
-    ip_address  = "198.18.1.10"
-    rdp_enabled = false
-  }
-/*
-  network_interfaces {
-    network_uid = "VLAN-PRIMARY" # Need data source support for existing network
-    name        = "Network adapter 1"
     mac_address = "00:50:56:97:d7:90"
     type        = "VIRTUAL_VMXNET_3"
     ip_address  = "198.18.133.100"
     rdp_enabled = false
   }
-*/
+
   remote_access {
     vm_console_enabled = false
   }
@@ -103,24 +94,14 @@ resource "dcloud_vm" "cml" {
   }
 
   network_interfaces {
-    network_uid = dcloud_network.demo_network.id
+    network_uid = dcloud_network.default_network.id
     name        = "Network adapter 0"
-    mac_address = "00:50:56:97:d7:90"
-    type        = "VIRTUAL_VMXNET_3"
-    ip_address  = "198.18.1.11"
-    rdp_enabled = false
-  }
-
-/*
-  network_interfaces {
-    network_uid = "VLAN-PRIMARY" # Need data source support for existing network
-    name        = "Network adapter 1"
     mac_address = "00:50:56:97:d7:90"
     type        = "VIRTUAL_VMXNET_3"
     ip_address  = "198.18.133.101"
     rdp_enabled = false
   }
-*/
+
   remote_access {
     vm_console_enabled = false
   }

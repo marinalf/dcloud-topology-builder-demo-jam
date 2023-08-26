@@ -1,7 +1,7 @@
 terraform {
   required_providers {
     dcloud = {
-      version = ">=0.1.14"
+      version = ">=0.1.15"
       source  = "cisco-open/dcloud"
     }
   }
@@ -12,3 +12,5 @@ provider "dcloud" {
   auth_token = var.browser_token # or set your environment with "export TB_AUTH_TOKEN=<browser_token>". 
   # Find token with Chrome Dev Tools/Application/Local Storage/tb_p_a value
 }
+
+
