@@ -1,4 +1,4 @@
-# Plan needs to run twice to save VM name: https://github.com/cisco-open/terraform-provider-dcloud/issues/23
+# Plan needs to run twice to save VM names: https://github.com/cisco-open/terraform-provider-dcloud/issues/23
 
 resource "dcloud_topology" "demo_topology" {
   name        = "Demo Jam Topology"
@@ -9,8 +9,15 @@ resource "dcloud_topology" "demo_topology" {
 
 resource "dcloud_network" "default_network" {
   name                 = "Management"
-  description          = "Nexus Dashboard & CML"
+  description          = "Management"
   inventory_network_id = "VLAN-PRIMARY"
+  topology_uid         = dcloud_topology.demo_topology.id
+}
+
+resource "dcloud_network" "data_network" {
+  name                 = "Nexus Dashboard + CML"
+  description          = "Data Network"
+  inventory_network_id = "L3-VLAN-1"
   topology_uid         = dcloud_topology.demo_topology.id
 }
 
@@ -71,6 +78,15 @@ resource "dcloud_vm" "nexus_dashboard" {
     rdp_enabled = false
   }
 
+  network_interfaces {
+    network_uid = dcloud_network.data_network.id
+    name        = "Network adapter 1"
+    mac_address = "00:50:56:97:d7:91"
+    type        = "VIRTUAL_VMXNET_3"
+    ip_address  = "198.18.1.100"
+    rdp_enabled = false
+  }
+
   remote_access {
     vm_console_enabled = false
   }
@@ -102,7 +118,17 @@ resource "dcloud_vm" "cml" {
     rdp_enabled = false
   }
 
+    network_interfaces {
+    network_uid = dcloud_network.data_network.id
+    name        = "Network adapter 1"
+    mac_address = "00:50:56:97:d7:91"
+    type        = "VIRTUAL_VMXNET_3"
+    ip_address  = "198.18.1.101"
+    rdp_enabled = false
+  }
+
   remote_access {
-    vm_console_enabled = false
+    vm_console_enabled = true
   }
 }
+
